@@ -108,6 +108,18 @@ var EventHandlers = {
       touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2)));
     }
 
+    //make sure the user swipse a little bit before we actually moves the slider
+    if(touchObject.swipeLength < 10){
+        return;
+    }
+    //and check if the user first swipes vertical, then skip as well
+    touchObject.swipeLengthVertical = Math.round(Math.sqrt(Math.pow(touchObject.curY - touchObject.startY, 2)));
+    if(touchObject.swipeLengthVertical > touchObject.swipeLength){
+        this.setState({ swiped: true });
+        e.preventDefault();
+        return;
+    }
+
     positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
 
     if (this.props.verticalSwiping) {
